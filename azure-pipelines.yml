@@ -21,7 +21,11 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'cobertura:cobertura'
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
     #codeCoverageToolOption: Cobertura
+
+
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -35,7 +39,7 @@ steps:
     SonarCloud: 'sonar-connection'
     organization: 'app-sonar2706'
     scannerMode: 'Other'
-- task: SonarCloudAnalyze@1
+
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
