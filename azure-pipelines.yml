@@ -11,6 +11,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonar-connection'
+    organization: 'app-sonar2706'
+    scannerMode: 'Other'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -34,11 +39,7 @@ steps:
     pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java/'
     reportDirectory: '$(System.DefaultWorkingDirectory)/**/**/site/cobertura'
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'sonar-connection'
-    organization: 'app-sonar2706'
-    scannerMode: 'Other'
+
 
 - task: SonarCloudPublish@1
   inputs:
