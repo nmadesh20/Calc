@@ -15,8 +15,9 @@ steps:
     targetType: 'inline'
     script: |
       # Write your commands here
-      
       java -version
+      echo $JAVA_HOME
+      #export JAVA_HOME=/path/to/java11
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'sonar-connection'
