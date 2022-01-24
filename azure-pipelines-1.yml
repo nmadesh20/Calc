@@ -112,7 +112,7 @@ steps:
     targetRepo: 'generic-local'
     status: 'Released'
     includeDependencies: true
-    copy: false
+    copy: true
     dryRun: false
     
 
