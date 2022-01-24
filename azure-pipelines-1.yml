@@ -47,8 +47,8 @@ steps:
       {
         "files": [
           {
-            "pattern": "*.zip",
-            "target": "maven"
+            "pattern": ""$(Build.ArtifactStagingDirectory)/*.zip"",
+            "target": "generic-local/generic-local/drop/"
           }
         ]
       }
