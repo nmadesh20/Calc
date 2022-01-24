@@ -44,11 +44,13 @@ steps:
       cd $(Build.ArtifactStagingDirectory)
       ls -lrt
     
-
-
-- task: ArtifactoryGenericUpload@2
+- task: ArtifactoryBuildPromotion@1
   inputs:
     artifactoryService: 'JfrogConnection'
-    specSource: 'file'
-    file: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    failNoOp: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    targetRepo: 'default-maven-local'
+    status: 'Released'
+    includeDependencies: false
+    copy: false
+    dryRun: false
