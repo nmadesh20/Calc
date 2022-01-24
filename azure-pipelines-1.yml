@@ -44,8 +44,11 @@ steps:
       cd $(Build.ArtifactStagingDirectory)
       ls -lrt
     
+
+
 - task: ArtifactoryGenericUpload@2
   inputs:
     artifactoryService: 'JfrogConnection'
     specSource: 'file'
+    file: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     failNoOp: true
