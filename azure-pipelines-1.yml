@@ -34,7 +34,43 @@ steps:
     cliInstallationRepo: 'jfrog-cli-remote'
     installExtractors: true
     extractorsInstallationRepo: 'extractors'
-  
+
+- task: ArtifactoryGenericDownload@3
+  inputs:
+    connection: 'JfrogConnection'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "libs-generic-local/*.zip",
+            "target": "dependencies/files"
+          }
+        ]
+      }
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    includeEnvVars: true
+    failNoOp: true
+- task: JFrogGenericArtifacts@1
+  inputs:
+    command: 'Upload'
+    connection: 'Jfrog Artiv2'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "libs-generic-local/*.zip",
+            "target": "dependencies/files"
+          }
+        ]
+      }
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    failNoOp: true
 - task: JFrogMaven@1
   inputs:
     mavenPomFile: 'pom.xml'
@@ -46,6 +82,29 @@ steps:
     targetDeployReleaseRepo: 'default-maven-local'
     targetDeploySnapshotRepo: 'default-maven-local'
 
+- task: JFrogCollectIssues@1
+  inputs:
+    artifactoryConnection: 'Jfrog Artiv2'
+    configSource: 'taskConfiguration'
+    taskConfig: |
+      version: 1
+      issues:
+          trackerName: AZURE BOARDS
+          regexp: (.+-[0-9]+)\s-\s(.+) 
+          keyGroupIndex: 1
+          summaryGroupIndex: 2
+          trackerUrl: https://dev.azure.com/iamsaron90/First%20project/_workitems/create/Issue
+          aggregate: true
+          aggregationStatus: RELEASED
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+
+- task: JFrogPublishBuildInfo@1
+  inputs:
+   artifactoryConnection: 'Jfrog Artiv2'
+   buildName: '$(Build.DefinitionName)'
+   buildNumber: '$(Build.BuildNumber)'
+
 - task: ArtifactoryBuildPromotion@1
   inputs:
     artifactoryService: 'JfrogConnection'
@@ -53,10 +112,10 @@ steps:
     buildNumber: '$(Build.BuildNumber)'
     targetRepo: 'default-maven-local'
     status: 'Released'
-    sourceRepo: 'default-maven-local'
-    includeDependencies: false
+    includeDependencies: true
     copy: false
     dryRun: false
+    
 
 - task: ArchiveFiles@2
   inputs:
