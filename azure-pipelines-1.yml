@@ -53,7 +53,18 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
 - task: Bash@3
+  displayName: Files in BinariesDirectory
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      
+      cd $(Build.BinariesDirectory)
+      ls -lrt
+- task: Bash@3
+  displayName: Files in ArtifactStagingDirectory
   inputs:
     targetType: 'inline'
     script: |
