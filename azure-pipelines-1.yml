@@ -16,6 +16,9 @@ steps:
     SonarCloud: 'sonar-connection'
     organization: 'app-sonar2706'
     scannerMode: 'Other'
+- task: WhiteSource@21
+  inputs:
+    cwd: '$(System.DefaultWorkingDirectory)'
 - task: ArtifactoryMaven@2
   inputs:
     mavenPomFile: 'pom.xml'
