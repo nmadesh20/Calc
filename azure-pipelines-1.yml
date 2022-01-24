@@ -45,6 +45,7 @@ steps:
       ls -lrt
     
 
+
 - task: FortifyOnDemandStatic@8
   inputs:
     FortifyProjects: '/home/vsts/work/1/s/target/'
@@ -52,13 +53,12 @@ steps:
     ReleaseOptions: '0'
     ReleaseId: 171769
     EntitlementSelection: '1'
-    EntitlementPreference: '2'
+    EntitlementPreference: '0'
     OverrideScanSettings: '2'
     InProgressScanActionType: '0'
     RemediationScanPreference: '0'
     BuildType: 'none'
     PolicyFailAction: '1'
-
 - task: ArtifactoryGenericUpload@2
   inputs:
     artifactoryService: 'JfrogConnection'
