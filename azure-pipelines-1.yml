@@ -37,6 +37,24 @@ steps:
     artifactoryDeployService: 'JfrogConnection'
     targetDeployReleaseRepo: 'default-maven-virtual'
     targetDeploySnapshotRepo: 'default-maven-virtual'
+
+- task: JFrogToolsInstaller@1
+  inputs:
+    artifactoryConnection: 'Jfrog Artiv2'
+    cliInstallationRepo: 'default-maven-virtual'
+    installExtractors: true
+    extractorsInstallationRepo: 'default-maven-virtual'
+
+- task: JFrogMaven@1
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'install'
+    artifactoryResolverService: 'Jfrog Artiv2'
+    targetResolveReleaseRepo: 'default-maven-virtual'
+    targetResolveSnapshotRepo: 'default-maven-virtual'
+    artifactoryDeployService: 'Jfrog Artiv2'
+    targetDeployReleaseRepo: 'default-maven-local'
+    targetDeploySnapshotRepo: 'default-maven-local'
 - task: ArtifactoryBuildPromotion@1
   inputs:
     artifactoryService: 'JfrogConnection'
