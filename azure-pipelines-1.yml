@@ -45,6 +45,13 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'fortify'
     publishLocation: 'pipeline'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Pipeline.Workspace)'
+    Contents: '**'
+    TargetFolder: '$(Build.StagingDirectory)'
+
     
 - task: ArchiveFiles@2
   inputs:
