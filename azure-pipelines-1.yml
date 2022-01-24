@@ -16,6 +16,7 @@ steps:
     artifact: 'fortify'
     publishLocation: 'pipeline'
 
+
 - task: FortifyOnDemandStatic@8
   inputs:
     FortifyProjects: '$(build.artifactstagingdirectory)'
@@ -28,3 +29,4 @@ steps:
     InProgressScanActionType: '0'
     RemediationScanPreference: '0'
     BuildType: 'none'
+    PolicyFailAction: '0'
