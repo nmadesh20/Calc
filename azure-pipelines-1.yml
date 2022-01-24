@@ -16,7 +16,6 @@ steps:
     artifact: 'fortify'
     publishLocation: 'pipeline'
 
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -45,9 +44,10 @@ steps:
       cd $(Build.ArtifactStagingDirectory)
       ls -lrt
     
+
 - task: FortifyOnDemandStatic@8
   inputs:
-    FortifyProjects: '$(Build.ArtifactStagingDirectory)'
+    FortifyProjects: '/home/vsts/work/1/s/target/'
     FodConnection: 'fortify'
     ReleaseOptions: '0'
     ReleaseId: 171769
@@ -57,4 +57,5 @@ steps:
     InProgressScanActionType: '0'
     RemediationScanPreference: '0'
     BuildType: 'none'
-    PolicyFailAction: '0'
+    PolicyFailAction: '1'
+
