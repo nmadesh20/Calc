@@ -69,7 +69,7 @@ steps:
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
     includeEnvVars: true
-    failNoOp: false
+    failNoOp: true
 
 
 
