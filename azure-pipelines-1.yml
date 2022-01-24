@@ -10,30 +10,16 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: Bash@3
+- task: PublishPipelineArtifact@1
   inputs:
-    targetType: 'inline'
-    script: |
-      # Write your commands here
-      java -version
-      echo $JAVA_HOME
-      export JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64
-- task: SonarCloudPrepare@1
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'fortify'
+    publishLocation: 'pipeline'
+- task: FortifyOnDemandStatic@8
   inputs:
-    SonarCloud: 'sonar-connection'
-    organization: 'app-sonar2706'
-    scannerMode: 'Other'
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    sonarQubeRunAnalysis: true
-    goals: 'sonar:sonar'
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+    FortifyProjects: '$(build.artifactstagingdirectory)'
+    FodConnection: 'fortify'
+    ReleaseOptions: '0'
+    ReleaseId: 171769
+    EntitlementPreference: '2'
+    BuildType: 'none'
