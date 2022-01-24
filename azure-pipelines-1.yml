@@ -27,60 +27,38 @@ steps:
     targetDeployReleaseRepo: 'default-maven-virtual'
     targetDeploySnapshotRepo: 'default-maven-virtual'
 
-
-- task: JFrogToolsInstaller@1
+- task: Maven@3
+  displayName: Packaging with Maven
   inputs:
-    artifactoryConnection: 'Jfrog Artiv2'
-    cliInstallationRepo: 'jfrog-cli-remote'
-    installExtractors: true
-    extractorsInstallationRepo: 'extractors'
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 
-- task: ArtifactoryGenericDownload@3
+- task: ArtifactoryGenericUpload@2
   inputs:
-    connection: 'JfrogConnection'
+    artifactoryService: 'JfrogConnection'
     specSource: 'taskConfiguration'
     fileSpec: |
       {
         "files": [
           {
-            "pattern": "libs-generic-local/*.zip",
-            "target": "dependencies/files"
+            "pattern": "*.zip",
+            "target": "maven"
           }
         ]
       }
-    collectBuildInfo: true
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
     includeEnvVars: true
     failNoOp: true
-- task: JFrogGenericArtifacts@1
-  inputs:
-    command: 'Upload'
-    connection: 'Jfrog Artiv2'
-    specSource: 'taskConfiguration'
-    fileSpec: |
-      {
-        "files": [
-          {
-            "pattern": "libs-generic-local/*.zip",
-            "target": "dependencies/files"
-          }
-        ]
-      }
-    collectBuildInfo: true
-    buildName: '$(Build.DefinitionName)'
-    buildNumber: '$(Build.BuildNumber)'
-    failNoOp: true
-- task: JFrogMaven@1
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'install'
-    artifactoryResolverService: 'Jfrog Artiv2'
-    targetResolveReleaseRepo: 'default-maven-virtual'
-    targetResolveSnapshotRepo: 'default-maven-virtual'
-    artifactoryDeployService: 'Jfrog Artiv2'
-    targetDeployReleaseRepo: 'default-maven-local'
-    targetDeploySnapshotRepo: 'default-maven-local'
+
+
+
 
 - task: JFrogCollectIssues@1
   inputs:
@@ -89,11 +67,11 @@ steps:
     taskConfig: |
       version: 1
       issues:
-          trackerName: AZURE BOARDS
+          trackerName: GITHUB
           regexp: (.+-[0-9]+)\s-\s(.+) 
           keyGroupIndex: 1
           summaryGroupIndex: 2
-          trackerUrl: https://dev.azure.com/iamsaron90/First%20project/_workitems/create/Issue
+          trackerUrl: https://github.com/issues?q=is%3Aopen+is%3Aissue+assignee%3Anmadesh20+archived%3Afalse+user%3Anmadesh20
           aggregate: true
           aggregationStatus: RELEASED
     buildName: '$(Build.DefinitionName)'
@@ -104,6 +82,13 @@ steps:
    artifactoryConnection: 'Jfrog Artiv2'
    buildName: '$(Build.DefinitionName)'
    buildNumber: '$(Build.BuildNumber)'
+
+- task: ArtifactoryXrayScan@1
+  inputs:
+    artifactoryService: 'JfrogConnection'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    allowFailBuild: true
 
 - task: ArtifactoryBuildPromotion@1
   inputs:
