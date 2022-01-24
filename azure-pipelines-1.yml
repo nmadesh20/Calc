@@ -15,11 +15,16 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'fortify'
     publishLocation: 'pipeline'
+
 - task: FortifyOnDemandStatic@8
   inputs:
     FortifyProjects: '$(build.artifactstagingdirectory)'
     FodConnection: 'fortify'
     ReleaseOptions: '0'
     ReleaseId: 171769
+    EntitlementSelection: '1'
     EntitlementPreference: '2'
+    OverrideScanSettings: '2'
+    InProgressScanActionType: '0'
+    RemediationScanPreference: '0'
     BuildType: 'none'
