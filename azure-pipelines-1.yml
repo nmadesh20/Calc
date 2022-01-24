@@ -122,6 +122,7 @@ steps:
    artifactoryConnection: 'Jfrog Artiv2'
    buildName: '$(Build.DefinitionName)'
    buildNumber: '$(Build.BuildNumber)'
+   
 
 - task: ArtifactoryXrayScan@1
   inputs:
@@ -140,7 +141,7 @@ steps:
     includeDependencies: true
     copy: true
     dryRun: false
-    
+    sourceRepo: 'generic-local'
 
 - task: ArchiveFiles@2
   inputs:
