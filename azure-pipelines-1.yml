@@ -48,20 +48,20 @@ steps:
     
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    rootFolderOrFile: '$(Build.StagingDirectory)'
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
 - task: Bash@3
-  displayName: Files in BinariesDirectory
+  displayName: Files in StagingDirectory
   inputs:
     targetType: 'inline'
     script: |
       # Write your commands here
       
-      cd $(Build.BinariesDirectory)
+      cd $(Build.StagingDirectory)
       ls -lrt
 - task: Bash@3
   displayName: Files in ArtifactStagingDirectory
