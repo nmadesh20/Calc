@@ -27,6 +27,17 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 
+- task: ArtifactoryMaven@2
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'install'
+    artifactoryResolverService: 'JfrogConnection'
+    targetResolveReleaseRepo: 'default-maven-virtual'
+    targetResolveSnapshotRepo: 'default-maven-virtual'
+    artifactoryDeployService: 'JfrogConnection'
+    targetDeployReleaseRepo: 'default-maven-virtual'
+    targetDeploySnapshotRepo: 'default-maven-virtual'
+
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
