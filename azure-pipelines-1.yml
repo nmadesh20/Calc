@@ -15,7 +15,11 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'fortify'
     publishLocation: 'pipeline'
-
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonar-connection'
+    organization: 'app-sonar2706'
+    scannerMode: 'Other'
 - task: ArtifactoryMaven@2
   inputs:
     mavenPomFile: 'pom.xml'
