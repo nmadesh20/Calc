@@ -10,11 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'fortify'
-    publishLocation: 'pipeline'
+
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'sonar-connection'
@@ -43,6 +39,13 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
     goals: 'package'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'fortify'
+    publishLocation: 'pipeline'
+    
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
