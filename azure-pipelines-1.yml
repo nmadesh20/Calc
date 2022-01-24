@@ -17,7 +17,7 @@ steps:
       # Write your commands here
       java -version
       echo $JAVA_HOME
-      #export JAVA_HOME=/path/to/java11
+      export JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'sonar-connection'
