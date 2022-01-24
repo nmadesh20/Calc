@@ -33,7 +33,7 @@ steps:
     artifactoryConnection: 'Jfrog Artiv2'
     cliInstallationRepo: 'jfrog-cli-remote'
     installExtractors: true
-    extractorsInstallationRepo: 'default-maven-remote'
+    extractorsInstallationRepo: 'extractors'
   
 - task: JFrogMaven@1
   inputs:
