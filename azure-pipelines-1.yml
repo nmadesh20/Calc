@@ -109,7 +109,7 @@ steps:
     artifactoryService: 'JfrogConnection'
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
-    targetRepo: 'default-maven-local'
+    targetRepo: 'generic-local'
     status: 'Released'
     includeDependencies: true
     copy: false
