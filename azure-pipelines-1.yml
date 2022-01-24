@@ -16,17 +16,6 @@ steps:
     artifact: 'fortify'
     publishLocation: 'pipeline'
 
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-
 - task: ArtifactoryMaven@2
   inputs:
     mavenPomFile: 'pom.xml'
@@ -38,13 +27,14 @@ steps:
     targetDeployReleaseRepo: 'default-maven-virtual'
     targetDeploySnapshotRepo: 'default-maven-virtual'
 
+
 - task: JFrogToolsInstaller@1
   inputs:
     artifactoryConnection: 'Jfrog Artiv2'
-    cliInstallationRepo: 'default-maven-virtual'
+    cliInstallationRepo: 'jfrog-cli-remote'
     installExtractors: true
-    extractorsInstallationRepo: 'default-maven-virtual'
-
+    extractorsInstallationRepo: 'default-maven-remote'
+  
 - task: JFrogMaven@1
   inputs:
     mavenPomFile: 'pom.xml'
