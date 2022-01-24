@@ -59,3 +59,8 @@ steps:
     BuildType: 'none'
     PolicyFailAction: '1'
 
+- task: ArtifactoryGenericUpload@2
+  inputs:
+    artifactoryService: 'JfrogConnection'
+    specSource: 'file'
+    failNoOp: true
