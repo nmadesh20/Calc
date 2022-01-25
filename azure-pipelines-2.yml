@@ -25,9 +25,15 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '**/target/*jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishPipelineArtifact@1
+  condition: failed()
   inputs:
     targetPath: '$(Pipeline.Workspace)/s/target'
     artifact: 'myApp'
     publishLocation: 'pipeline'
-
