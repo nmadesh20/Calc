@@ -3,7 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-name: mypipeline.$(BuildId)
 trigger:
 - master
 
@@ -11,9 +10,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: WhiteSource@21
-  inputs:
-    cwd: '$(System.DefaultWorkingDirectory)'
+#- task: WhiteSource@21
+#  inputs:
+#    cwd: '$(System.DefaultWorkingDirectory)'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -25,18 +24,17 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '**/target/*jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-
-- task: CopyFiles@2
-  condition: failed()
-  inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: '**/target/*jar'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
   condition: failed()
