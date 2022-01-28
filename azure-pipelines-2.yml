@@ -17,4 +17,4 @@ steps:
     script: |
       # Write your commands here
       
-      git push --mirror https://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@github.com/nmadesh20/testRepo
+      git push --mirror https://$(user):$(passcode)@github.com/nmadesh20/testRepo
